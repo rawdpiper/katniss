@@ -1,0 +1,35 @@
+const axios = require('axios');
+const dotenv = require('dotenv');
+const getNumberOfPages = require('./getNumberOfPages');
+dotenv.config();
+
+async function discover(year) {
+  try {
+    const url = 'https://api.themoviedb.org/3/discover/movie';
+
+    const totalPages = await getNumberOfPages(year);
+
+    const movieDetails = [];
+
+    for (let i = 1; i <= totalPages; i++) {
+      const response = await axios.get(url, {
+        params: {
+          primary_release_year: year,
+          page: i,
+        },
+        headers: {
+          Authorization: `Bearer ${  process.env.TMDB_API_READ_ACCESS_TOKEN}`,
+        },
+      });
+
+      for (let j = 0; j < response.data.results.length; j++) {
+        movieDetails.push(response.data.results[j]);
+      }
+    }
+    return movieDetails;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+module.exports = discover;
