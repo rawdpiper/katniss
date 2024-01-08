@@ -29,7 +29,7 @@ async function addMovieGenresToMovieDetails(movie_id, genres) {
   try {
     for (let i = 0; i < genres.length; i++) {
       const genre = genres[i];
-      const result = await movieService.updateMovieGenre({
+      await movieService.updateMovieGenre({
         movie_id,
         genre,
       });
