@@ -32,8 +32,48 @@ async function deleteMovieIdSet() {
   }
 }
 
+async function addYearToHash(year, numOfMovies) {
+  try {
+    await redis.hset('year-hash', {
+      [year]: numOfMovies,
+    });
+    await redis.hget('year-hash', String(year));
+    logger.info(
+      loggerFormat.nonRequestLogFormat(
+        'Hash -',
+        `Year ${year} added to hash with ${numOfMovies} movies`
+      )
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function getYearFieldFromHash(year) {
+  try {
+    const result = await redis.hget('year-hash', String(year));
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function deleteYearHash() {
+  try {
+    await redis.del('year-hash');
+    logger.info(
+      loggerFormat.nonRequestLogFormat('Hash -', 'Year hash deleted')
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 module.exports = {
   addMovieIDSet,
   checkMovieIDSet,
   deleteMovieIdSet,
+  addYearToHash,
+  getYearFieldFromHash,
+  deleteYearHash
 };

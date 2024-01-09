@@ -1,10 +1,28 @@
 const discover = require('../utils/discover');
+const { getNumOfMoviesForYear } = require('../services/movie.services');
+const { getYearFieldFromHash } = require('../utils/redis');
+const dotenv = require('dotenv');
 const logger = require('../utils/logger/logger');
 const loggerFormat = require('../utils/logger/logFormat');
 
+dotenv.config();
+
 async function fetchMovieIDs(queue) {
   try {
-    for (let i = 1887; i < 1889; i++) {
+    const startYear = process.env.START_YEAR;
+    const endYear = process.env.END_YEAR;
+    for (let i = startYear; i <= endYear; i++) {
+      const numOfMovies = await getNumOfMoviesForYear(i);
+      const numOfMoviesInHash = await getYearFieldFromHash(i);
+      if (String(numOfMovies) === numOfMoviesInHash) {
+        logger.info(
+          loggerFormat.nonRequestLogFormat(
+            'Year -',
+            `Year ${i} already completed!`
+          )
+        );
+        continue;
+      }
       const moviesResults = await discover(i);
       for (let j = 0; j < moviesResults.length; j++) {
         await queue.add(

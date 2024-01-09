@@ -8,7 +8,7 @@ const Queue = require('bull');
 const fetchMovieIDs = require('./jobs/fetchMovieIDs');
 const processMovieIDs = require('./jobs/processMovieIDs');
 const connectDB = require('./db/db');
-const { deleteMovieIdSet } = require('./utils/redis');
+const { deleteMovieIdSet, deleteYearHash } = require('./utils/redis');
 const dropMovieCollection = require('./scripts/cleanUpDB');
 const emptyQueue = require('./scripts/cleanUpQueue');
 const logger = require('./utils/logger/logger');
@@ -45,6 +45,7 @@ async function main() {
       await emptyQueue();
       await deleteMovieIdSet();
       await dropMovieCollection();
+      await deleteYearHash();
     }
 
     await fetchMovieIDs(movieIdsQueue);

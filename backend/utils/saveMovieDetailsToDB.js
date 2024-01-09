@@ -1,6 +1,6 @@
 const movieService = require('../services/movie.services');
 
-async function saveMovieDetailsToDB(details) {
+async function saveMovieDetailsToDB(details, year) {
   try {
     const movieDetails = await movieService.createMovieDetails({
       movie_id: details.id,
@@ -13,6 +13,7 @@ async function saveMovieDetailsToDB(details) {
       poster_path: details.poster_path,
       backdrop_path: details.backdrop_path,
       imdb_id: details.imdb_id,
+      year: year,
     });
     return movieDetails;
   } catch (error) {

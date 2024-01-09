@@ -1,13 +1,13 @@
-const movie = require('../models/movie.model');
+const movieModel = require('../models/movie.model');
 
 async function createMovieDetails(payload) {
-  const newMovie = movie.create(payload);
+  const newMovie = movieModel.create(payload);
   return newMovie;
 }
 
 async function updateMovieGenre(payload) {
   try {
-    const updatedMovie = await movie.findOneAndUpdate(
+    const updatedMovie = await movieModel.findOneAndUpdate(
       { movie_id: payload.movie_id },
       { $push: { genres: payload.genre.name } }
     );
@@ -17,10 +17,11 @@ async function updateMovieGenre(payload) {
   }
 }
 
-async function getMovieDetails(movie_id) {
+
+async function getNumOfMoviesForYear(year) {
   try {
-    const movieDetails = await getMovieDetails(movie_id);
-    return movieDetails;
+    const numOfMovies = await movieModel.countDocuments({ year: year });
+    return numOfMovies;
   } catch (error) {
     console.log(error);
   }
@@ -29,5 +30,5 @@ async function getMovieDetails(movie_id) {
 module.exports = {
   createMovieDetails,
   updateMovieGenre,
-  getMovieDetails,
+  getNumOfMoviesForYear,
 };

@@ -1,5 +1,6 @@
 const axios = require('axios');
 const dotenv = require('dotenv');
+const { addYearToHash } = require('../utils/redis');
 const getNumberOfPages = require('./getNumberOfPages');
 dotenv.config();
 
@@ -21,7 +22,7 @@ async function discover(year) {
           Authorization: `Bearer ${  process.env.TMDB_API_READ_ACCESS_TOKEN}`,
         },
       });
-
+      await addYearToHash(year, response.data.total_results);
       for (let j = 0; j < response.data.results.length; j++) {
         movieDetails.push(response.data.results[j]);
       }

@@ -14,7 +14,7 @@ async function processMovieIdsQueue(queue) {
       const movieExists = await checkMovieIDSet(movieDetails.id);
 
       if (!movieExists) {
-        await saveMovieDetailsToDB(movieDetails);
+        await saveMovieDetailsToDB(movieDetails, job.data.year);
         await addMovieGenresToMovieDetails(
           movieDetails.id,
           movieDetails.genres

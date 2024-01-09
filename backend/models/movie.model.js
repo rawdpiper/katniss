@@ -33,6 +33,9 @@ const movieSchema = new mongoose.Schema({
   imdb_id: {
     type: String,
   },
+  year: {
+    type: Number,
+  },
   genres: {
     type: Array,
   },
