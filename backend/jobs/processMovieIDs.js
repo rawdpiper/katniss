@@ -5,6 +5,7 @@ const {
 } = require('../utils/saveMovieDetailsToDB');
 const { addMovieIDSet, checkMovieIDSet } = require('../utils/redis');
 const eventListener = require('../utils/eventListener');
+const logger = require('../utils/logger/logger');
 
 async function processMovieIdsQueue(queue) {
   try {
@@ -25,7 +26,7 @@ async function processMovieIdsQueue(queue) {
     });
     eventListener(queue);
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 

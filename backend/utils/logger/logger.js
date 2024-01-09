@@ -1,15 +1,30 @@
 const { format, createLogger, transports, addColors } = require('winston');
+require('winston-daily-rotate-file');
 
 const logger = createLogger({
   transports: [
     new transports.Console(),
-    new transports.File({ filename: 'logs/combined.log' }),
-    new transports.File({ filename: 'logs/error.log', level: 'error' }),
+    new transports.DailyRotateFile({
+      datePattern: 'DD-MM-YYYY',
+      filename: 'logs/combined-%DATE%.log',
+    }),
+    new transports.DailyRotateFile({
+      datePattern: 'DD-MM-YYYY',
+      filename: 'logs/error-%DATE%.log',
+      level: 'error',
+    }),
   ],
   format: format.combine(
+    format.json(),
     format.colorize(),
     format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
-    format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`)
+    format.printf((info) => {
+      let message = `${info.timestamp} ${info.level}: ${info.message}`;
+      if (info.stack) {
+        message += `\nStack Trace:\n${info.stack}`;
+      }
+      return message;
+    })
   ),
 });
 

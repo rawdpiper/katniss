@@ -9,7 +9,7 @@ async function dropMovieCollection() {
       loggerFormat.nonRequestLogFormat('Database -', 'Movies collection dropped')
     );
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 

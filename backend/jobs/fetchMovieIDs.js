@@ -43,7 +43,7 @@ async function fetchMovieIDs(queue) {
       }
     }
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 

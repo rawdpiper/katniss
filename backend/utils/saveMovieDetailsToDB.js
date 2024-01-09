@@ -1,4 +1,5 @@
 const movieService = require('../services/movie.services');
+const logger = require('../utils/logger/logger');
 
 async function saveMovieDetailsToDB(details, year) {
   try {
@@ -17,7 +18,7 @@ async function saveMovieDetailsToDB(details, year) {
     });
     return movieDetails;
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 
@@ -31,7 +32,7 @@ async function addMovieGenresToMovieDetails(movie_id, genres) {
       });
     }
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 

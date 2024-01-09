@@ -22,7 +22,7 @@ async function cleanUpQueue() {
       );
     }
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 

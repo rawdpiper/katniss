@@ -1,4 +1,5 @@
 const movieModel = require('../models/movie.model');
+const logger = require('../utils/logger/logger');
 
 async function createMovieDetails(payload) {
   const newMovie = movieModel.create(payload);
@@ -13,7 +14,7 @@ async function updateMovieGenre(payload) {
     );
     return updatedMovie;
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 
@@ -23,7 +24,7 @@ async function getNumOfMoviesForYear(year) {
     const numOfMovies = await movieModel.countDocuments({ year: year });
     return numOfMovies;
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 

@@ -44,7 +44,7 @@ async function eventListener(queue) {
       logger.error(error);
     });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 

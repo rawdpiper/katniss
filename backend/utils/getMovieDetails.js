@@ -1,5 +1,7 @@
 const axios = require('axios');
 const dotenv = require('dotenv');
+const logger = require('../utils/logger/logger');
+
 dotenv.config();
 
 async function getMovieDetails(movie_id) {
@@ -14,7 +16,7 @@ async function getMovieDetails(movie_id) {
     const data = response.data;
     return data;
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 

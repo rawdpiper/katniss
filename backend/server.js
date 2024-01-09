@@ -51,7 +51,7 @@ async function main() {
     await fetchMovieIDs(movieIdsQueue);
     await processMovieIDs(movieIdsQueue);
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 

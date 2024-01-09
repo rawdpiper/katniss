@@ -14,7 +14,7 @@ async function connectDB() {
       loggerFormat.nonRequestLogFormat('Database -', 'MongoDB connected')
     );
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 

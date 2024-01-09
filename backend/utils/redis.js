@@ -8,7 +8,7 @@ async function addMovieIDSet(movie_id) {
   try {
     await redis.sadd('movie_ids', String(movie_id));
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 
@@ -17,7 +17,7 @@ async function checkMovieIDSet(movie_id) {
     const result = await redis.sismember('movie_ids', String(movie_id));
     return result;
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 
@@ -28,7 +28,7 @@ async function deleteMovieIdSet() {
       loggerFormat.nonRequestLogFormat('Set -', 'Movies ID set deleted')
     );
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 
@@ -45,7 +45,7 @@ async function addYearToHash(year, numOfMovies) {
       )
     );
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 
@@ -54,7 +54,7 @@ async function getYearFieldFromHash(year) {
     const result = await redis.hget('year-hash', String(year));
     return result;
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 
@@ -65,7 +65,7 @@ async function deleteYearHash() {
       loggerFormat.nonRequestLogFormat('Hash -', 'Year hash deleted')
     );
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 

@@ -1,5 +1,7 @@
 const axios = require('axios');
 const dotenv = require('dotenv');
+const logger = require('../utils/logger/logger');
+
 dotenv.config();
 
 async function getNumberOfPages(year) {
@@ -16,7 +18,7 @@ async function getNumberOfPages(year) {
     const data = await response.data;
     return data.total_pages;
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 

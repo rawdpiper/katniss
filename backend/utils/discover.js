@@ -2,6 +2,8 @@ const axios = require('axios');
 const dotenv = require('dotenv');
 const { addYearToHash } = require('../utils/redis');
 const getNumberOfPages = require('./getNumberOfPages');
+const logger = require('../utils/logger/logger');
+
 dotenv.config();
 
 async function discover(year) {
@@ -29,7 +31,7 @@ async function discover(year) {
     }
     return movieDetails;
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 
