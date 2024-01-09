@@ -1,6 +1,4 @@
 const movieService = require('../services/movie.services');
-const logger = require('../utils/logger/logger');
-const loggerFormat = require('../utils/logger/logFormat');
 
 async function saveMovieDetailsToDB(details) {
   try {
@@ -16,9 +14,6 @@ async function saveMovieDetailsToDB(details) {
       backdrop_path: details.backdrop_path,
       imdb_id: details.imdb_id,
     });
-    logger.info(
-      loggerFormat.nonRequestLogFormat('Database -', `${details.id}: '${details.title}' saved to database`)
-    );
     return movieDetails;
   } catch (error) {
     console.log(error);
@@ -34,9 +29,6 @@ async function addMovieGenresToMovieDetails(movie_id, genres) {
         genre,
       });
     }
-    logger.info(
-      loggerFormat.nonRequestLogFormat('Database -', `${movie_id} genre updated`)
-    );
   } catch (error) {
     console.log(error);
   }

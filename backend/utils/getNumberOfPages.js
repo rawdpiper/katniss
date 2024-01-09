@@ -10,7 +10,7 @@ async function getNumberOfPages(year) {
         primary_release_year: year,
       },
       headers: {
-        Authorization: `Bearer ${  process.env.TMDB_API_READ_ACCESS_TOKEN}`,
+        Authorization: `Bearer ${process.env.TMDB_API_READ_ACCESS_TOKEN}`,
       },
     });
     const data = await response.data;

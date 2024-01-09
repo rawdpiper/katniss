@@ -2,52 +2,56 @@ const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
 const { createBullBoard } = require('@bull-board/api');
-const { BullMQAdapter } = require('@bull-board/api/bullMQAdapter');
+const { BullAdapter } = require('@bull-board/api/bullAdapter');
 const { ExpressAdapter } = require('@bull-board/express');
 const Queue = require('bull');
 const fetchMovieIDs = require('./jobs/fetchMovieIDs');
 const processMovieIDs = require('./jobs/processMovieIDs');
 const connectDB = require('./db/db');
-const { deleteQueue, deleteMovieIdSet } = require('./utils/redis');
+const { deleteMovieIdSet } = require('./utils/redis');
 const dropMovieCollection = require('./scripts/cleanUpDB');
+const emptyQueue = require('./scripts/cleanUpQueue');
 const logger = require('./utils/logger/logger');
+
+const movieIdsQueue = new Queue(process.env.QUEUE_NAME, process.env.REDIS_URI, {
+  limiter: { max: 1, duration: 60000 },
+});
 
 dotenv.config();
 
 async function main() {
-  await connectDB();
+  try {
+    await connectDB();
 
-  if (process.env.NODE_ENV === 'dev') {
-    await deleteQueue();
-    await deleteMovieIdSet();
-    await dropMovieCollection();
+    const serverAdapter = new ExpressAdapter();
+    serverAdapter.setBasePath('/ui');
+
+    createBullBoard({
+      queues: [new BullAdapter(movieIdsQueue)],
+      serverAdapter,
+    });
+
+    app.use(express.json());
+    app.use('/ui', serverAdapter.getRouter());
+    const PORT = process.env.PORT || 8000;
+    app.listen(PORT, () => {
+      logger.info(`
+      ###########################################
+      Server is currently running at port ${PORT}
+      ###########################################`);
+    });
+
+    if (process.env.NODE_ENV === 'dev') {
+      await emptyQueue();
+      await deleteMovieIdSet();
+      await dropMovieCollection();
+    }
+
+    await fetchMovieIDs(movieIdsQueue);
+    await processMovieIDs(movieIdsQueue);
+  } catch (error) {
+    console.log(error);
   }
-
-  await fetchMovieIDs();
-  await processMovieIDs();
-
-  const movieIdsQueue = new Queue(
-    process.env.QUEUE_NAME,
-    process.env.REDIS_URI
-  );
-
-  const serverAdapter = new ExpressAdapter();
-  serverAdapter.setBasePath('/ui');
-
-  createBullBoard({
-    queues: [new BullMQAdapter(movieIdsQueue)],
-    serverAdapter,
-  });
-
-  app.use(express.json());
-  app.use('/ui', serverAdapter.getRouter());
-  const PORT = process.env.PORT || 8000;
-  app.listen(PORT, () => {
-    logger.info(`
-    ###########################################
-    Server is currently running at port ${PORT}
-    ###########################################`);
-  });
 }
 
 main();
