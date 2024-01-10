@@ -5,7 +5,7 @@ const loggerFormat = require('../utils/logger/logFormat');
 
 dotenv.config();
 
-const db = `mongodb+srv://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@${process.env.MONGO_DB_DATABASE_NAME}.dmfnf6m.mongodb.net/`;
+const db = `mongodb+srv://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@${process.env.MONGO_DB_HOST_NAME}.dmfnf6m.mongodb.net/${process.env.MONGO_DB_DATABASE_NAME}`;
 
 async function connectDB() {
   try {
