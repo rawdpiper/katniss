@@ -8,6 +8,7 @@ const movieSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
+    index: true,
   },
   overview: {
     type: String,

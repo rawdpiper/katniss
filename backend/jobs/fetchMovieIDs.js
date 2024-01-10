@@ -25,15 +25,10 @@ async function fetchMovieIDs(queue) {
       }
       const moviesResults = await discover(i);
       for (let j = 0; j < moviesResults.length; j++) {
-        await queue.add(
-          {
-            movie_id: moviesResults[j].id,
-            year: i,
-          },
-          {
-            deleteOnComplete: true,
-          }
-        );
+        await queue.add({
+          movie_id: moviesResults[j].id,
+          year: i,
+        });
         logger.info(
           loggerFormat.nonRequestLogFormat(
             'Queue -',

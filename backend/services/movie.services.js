@@ -18,7 +18,6 @@ async function updateMovieGenre(payload) {
   }
 }
 
-
 async function getNumOfMoviesForYear(year) {
   try {
     const numOfMovies = await movieModel.countDocuments({ year: year });
@@ -28,8 +27,20 @@ async function getNumOfMoviesForYear(year) {
   }
 }
 
+async function searchMovies(keyword) {
+  try {
+    const movies = await movieModel.find({
+      title: { $regex: keyword, $options: 'i' },
+    });
+    return movies;
+  } catch (error) {
+    logger.error(error);
+  }
+}
+
 module.exports = {
   createMovieDetails,
   updateMovieGenre,
   getNumOfMoviesForYear,
+  searchMovies,
 };
