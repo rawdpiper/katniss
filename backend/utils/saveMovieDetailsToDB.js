@@ -15,6 +15,7 @@ async function saveMovieDetailsToDB(details, year) {
       backdrop_path: details.backdrop_path,
       imdb_id: details.imdb_id,
       year: year,
+      content_type: 'movie'
     });
     return movieDetails;
   } catch (error) {

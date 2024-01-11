@@ -29,9 +29,12 @@ async function getNumOfMoviesForYear(year) {
 
 async function searchMovies(keyword) {
   try {
-    const movies = await movieModel.find({
-      title: { $regex: keyword, $options: 'i' },
-    });
+    const movies = await movieModel.find(
+      {
+        title: { $regex: keyword, $options: 'i' },
+      },
+      'movie_id title year runtime, poster_path content_type'
+    );
     return movies;
   } catch (error) {
     logger.error(error);

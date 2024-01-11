@@ -4,6 +4,7 @@ const movieSchema = new mongoose.Schema({
   movie_id: {
     type: Number,
     required: true,
+    index: true,
   },
   title: {
     type: String,
@@ -39,6 +40,9 @@ const movieSchema = new mongoose.Schema({
   },
   genres: {
     type: Array,
+  },
+  content_type: {
+    type: String,
   },
 });
 
