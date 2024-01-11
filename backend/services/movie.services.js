@@ -41,9 +41,19 @@ async function searchMovies(keyword) {
   }
 }
 
+async function getMovieDetails(movie_id) {
+  try {
+    const movie = await movieModel.findOne({ movie_id: movie_id });
+    return movie;
+  } catch (error) {
+    logger.error(error);
+  }
+}
+
 module.exports = {
   createMovieDetails,
   updateMovieGenre,
   getNumOfMoviesForYear,
   searchMovies,
+  getMovieDetails
 };

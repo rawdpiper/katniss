@@ -14,6 +14,7 @@ const emptyQueue = require('./scripts/cleanUpQueue');
 const logger = require('./utils/logger/logger');
 
 const searchRoute = require('./routes/search.route');
+const fetchContentDetailsRoute = require('./routes/fetchContentDetails.route');
 
 const movieIdsQueue = new Queue(process.env.QUEUE_NAME, process.env.REDIS_URI, {
   limiter: { max: 1, duration: 60000 },
@@ -34,8 +35,11 @@ async function main() {
     });
 
     app.use(express.json());
+
     app.use('/ui', serverAdapter.getRouter());
     app.use('/api', searchRoute);
+    app.use('/api', fetchContentDetailsRoute);
+
     const PORT = process.env.PORT || 8000;
     app.listen(PORT, () => {
       logger.info(`
