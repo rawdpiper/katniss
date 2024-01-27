@@ -9,7 +9,7 @@ async function getMovieDetails(movie_id) {
     const url = `https://api.themoviedb.org/3/movie/${movie_id}`;
     const response = await axios.get(url, {
       headers: {
-        Authorization: `Bearer ${  process.env.TMDB_API_READ_ACCESS_TOKEN}`,
+        Authorization: `Bearer ${process.env.TMDB_API_READ_ACCESS_TOKEN}`,
       },
     });
 
