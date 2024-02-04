@@ -33,7 +33,7 @@ async function searchMovies(keyword) {
       {
         title: { $regex: keyword, $options: 'i' },
       },
-      'movie_id title year runtime, poster_path content_type'
+      'movie_id title year runtime, poster_path content_type release_date'
     );
     return movies;
   } catch (error) {
