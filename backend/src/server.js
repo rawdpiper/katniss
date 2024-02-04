@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const dotenv = require('dotenv');
 const { createBullBoard } = require('@bull-board/api');
 const { BullAdapter } = require('@bull-board/api/bullAdapter');
@@ -32,6 +33,7 @@ async function main() {
       serverAdapter,
     });
 
+    app.use(cors());
     app.use(express.json());
 
     app.use('/ui', serverAdapter.getRouter());
