@@ -16,9 +16,7 @@ const logger = require('./utils/logger/logger');
 const searchRoute = require('./routes/search.route');
 const fetchContentDetailsRoute = require('./routes/fetchContentDetails.route');
 
-const movieIdsQueue = new Queue(process.env.QUEUE_NAME, process.env.REDIS_URI, {
-  limiter: { max: 1, duration: 60000 },
-});
+const movieIdsQueue = new Queue(process.env.QUEUE_NAME, process.env.REDIS_URI);
 
 dotenv.config();
 
