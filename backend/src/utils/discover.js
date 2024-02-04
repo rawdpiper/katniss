@@ -11,7 +11,16 @@ async function discover(year) {
     const url = 'https://api.themoviedb.org/3/discover/movie';
 
     const totalPages = await getNumberOfPages(year);
-
+    const numOfMovies = await axios.get(url, {
+      params: {
+        primary_release_year: year,
+        page: 1,
+      },
+      headers: {
+        Authorization: `Bearer ${process.env.TMDB_API_READ_ACCESS_TOKEN}`,
+      },
+    });
+    await addYearToHash(year, numOfMovies.data.total_results);
     const movieDetails = [];
 
     for (let i = 1; i <= totalPages; i++) {
@@ -21,10 +30,9 @@ async function discover(year) {
           page: i,
         },
         headers: {
-          Authorization: `Bearer ${  process.env.TMDB_API_READ_ACCESS_TOKEN}`,
+          Authorization: `Bearer ${process.env.TMDB_API_READ_ACCESS_TOKEN}`,
         },
       });
-      await addYearToHash(year, response.data.total_results);
       for (let j = 0; j < response.data.results.length; j++) {
         movieDetails.push(response.data.results[j]);
       }
