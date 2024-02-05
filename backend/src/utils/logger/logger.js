@@ -5,7 +5,7 @@ const logger = createLogger({
   transports: [
     new transports.Console(),
     new transports.DailyRotateFile({
-      datePattern: 'DD-MM-YYYY',
+      datePattern: 'YYYY-MM-DD',
       filename: 'logs/combined-%DATE%.log',
     }),
     new transports.DailyRotateFile({
