@@ -54,9 +54,9 @@ async function main() {
       await dropMovieCollection();
       await deleteYearHash();
     }
-
-    await fetchMovieIDs(movieIdsQueue);
+    
     await processMovieIDs(movieIdsQueue);
+    await fetchMovieIDs(movieIdsQueue);
   } catch (error) {
     logger.error(error);
   }

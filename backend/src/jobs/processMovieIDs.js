@@ -10,19 +10,28 @@ const logger = require('../utils/logger/logger');
 async function processMovieIdsQueue(queue) {
   try {
     queue.process(async (job, done) => {
-      const movieDetails = await getMovieDetails(job.data.movie_id);
+      try {
+        const movieDetails = await getMovieDetails(job.data.movie_id);
+        if (!movieDetails || !movieDetails.id) {
+          job.moveToFailed(true);
+        }
 
-      const movieExists = await checkMovieIDSet(movieDetails.id);
+        const movieExists = await checkMovieIDSet(movieDetails.id);
 
-      if (!movieExists) {
-        await saveMovieDetailsToDB(movieDetails, job.data.year);
-        await addMovieGenresToMovieDetails(
-          movieDetails.id,
-          movieDetails.genres
-        );
-        await addMovieIDSet(String(movieDetails.id));
+        if (!movieExists) {
+          await saveMovieDetailsToDB(movieDetails, job.data.year);
+          await addMovieGenresToMovieDetails(
+            movieDetails.id,
+            movieDetails.genres
+          );
+          await addMovieIDSet(String(movieDetails.id));
+        }
+        done();
+      } catch (innerError) {
+        logger.error(`Error processing job ${job.id}: ${innerError.message}`);
+        job.moveToFailed({ message: innerError.message }, true);
+        done(innerError);
       }
-      done();
     });
     eventListener(queue);
   } catch (error) {

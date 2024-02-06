@@ -9,7 +9,7 @@ const logger = createLogger({
       filename: 'logs/combined-%DATE%.log',
     }),
     new transports.DailyRotateFile({
-      datePattern: 'DD-MM-YYYY',
+      datePattern: 'YYYY-MM-DD',
       filename: 'logs/error-%DATE%.log',
       level: 'error',
     }),
